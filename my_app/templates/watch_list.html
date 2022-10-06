@@ -1,0 +1,54 @@
+{% extends "base.html" %} {% block title %}Watch List{% endblock %} {% block
+content %}
+<h1 align="center">Watch List</h1>
+
+{% if user.events %}
+<div class="container">
+  <div class="row">
+    {% for event in user.events %}
+    <div class="col-md-4 col-sm-12 col">
+      <div class="card">
+        <img
+          src="{{ event.image }}"
+          id="card-img-1"
+          style="height: 200px"
+          class="card-img-top"
+          alt="..."
+        />
+        <div class="card-body">
+          <h5 id="card-title-1" class="card-title">{{event.title}}</h5>
+          <p class="card-text">
+            Where:
+            <span id="card-desc-1" class="card-text">{{ event.city }}</span>
+          </p>
+          <p class="card-text">
+            When:
+            <span id="card-desc-2" class="card-text"
+              >{{ event.date_time }}</span
+            >
+          </p>
+          <a
+            id="desLink"
+            href="{{ event.website }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-sm btn-primary btn_font"
+            >Learn More</a
+          >
+          <button
+            type="button"
+            id="{{ event.id }}"
+            class="link-btn btn btn-sm btn-danger btn_font mx-auto"
+            onclick="removeEvent(id)"
+          >
+            Remove
+          </button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% else %}
+<p>You have no events saved to your watch list</p>
+{% endif %} {% endblock %}

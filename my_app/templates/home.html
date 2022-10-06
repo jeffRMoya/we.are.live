@@ -1,0 +1,82 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+    %}
+    <h1 align="center">Find Events in Your City</h1>
+    
+    <form action="#" method="POST">
+      <div class="container">
+        <div class="row">
+          <div class="col space_even">
+            <span
+              >City:
+              <input
+                type="text"
+                name="city"
+                id="city"
+                class="text_blue"
+                placeholder="Input a city name" /></span
+            ><span
+              >Keyword:
+              <input
+                type="text"
+                name="keyword"
+                class="text_blue"
+                placeholder="Input your search criteria"
+            /></span><span><button type="submit" class="btn btn-sm btn-primary">GO!</button></span>
+          </div>
+        </div>
+      </div>
+        
+      </div>
+    </form>
+    <br />
+    
+    {% if items %}
+    <div class="container">
+      <div class="row">
+        {% for event in items %} {% for location in locations %}
+        <div class="col-md-4 col-sm-12 col">
+          <div class="card">
+            <img
+              src="{{ event['images'][0]['url'] }}"
+              id="card-img-1"
+              style="height: 200px"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <h5 id="card-title-1" class="card-title">{{event['name']}}</h5>
+              <p class="card-text">
+                Where:
+                <span id="card-desc-1" class="card-text"
+                  >{{ location['city']['name'] }}</span
+                >
+              </p>
+              <p class="card-text">
+                When:
+                <span id="card-desc-2" class="card-text"
+                  >{{ event['dates']['start']['localDate'] }}</span
+                >
+              </p>
+              <a
+                id="desLink"
+                href="{{ event['url'] }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-sm btn-primary btn_font"
+                >Learn More</a
+              >
+              <button
+                type="button"
+                id="{{ event['id'] }}"
+                class="link-btn btn btn-sm btn-success btn_font mx-auto"
+                onclick="addToList(id)"
+              >
+                Add To Watch List
+              </button>
+            </div>
+          </div>
+        </div>
+        {% endfor %} {% endfor %}
+      </div>
+    </div>
+    {% endif %} {% endblock %}
