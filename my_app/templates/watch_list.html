@@ -1,6 +1,11 @@
 {% extends "base.html" %} {% block title %}Watch List{% endblock %} {% block
 content %}
-<h1 align="center">Watch List</h1>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='watch_list.css') }}"
+/>
+
+<h1>Watch List</h1>
 
 {% if user.events %}
 <div class="container">
@@ -23,9 +28,7 @@ content %}
           </p>
           <p class="card-text">
             When:
-            <span id="card-desc-2" class="card-text"
-              >{{ event.date_time }}</span
-            >
+            <span id="card-desc-2" class="card-text">{{ event.date }}</span>
           </p>
           <a
             id="desLink"

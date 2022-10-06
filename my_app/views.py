@@ -4,6 +4,7 @@ from .models import Event
 from . import db
 import json
 import requests
+import pymsgbox
 
 views = Blueprint('views', __name__)
 
@@ -52,25 +53,24 @@ def add_to_list():
             f"{url}events?apikey={api_key}&id={event_id}&locale=*")
         if resp.ok:
             data = resp.json()['_embedded']['events'][0]
-            print(data.keys())
+
             img = data['images'][0]['url']
             name_taken = data['name']
             locations = data['_embedded']['venues']
             time = data['dates']['start']['localDate']
-            print(type(time))
+
             site = data['url']
             for locale in locations:
                 location = locale['city']['name']
-                print(img, name_taken, time, site, location)
             if name_taken and img and time and location and site:
                 new_event = Event(title=name_taken, image=img, date=time,
                                   city=location, website=site, user_id=current_user.id)
                 db.session.add(new_event)
                 db.session.commit()
-                flash(f'{name_taken} added to your watch list!',
-                      category='success')
+                pymsgbox.alert(f'{name_taken} has been added to your watch list!',
+                               'SUCCESS!')
         else:
-            flash(f'Request error: {resp}', category='error')
+            pymsgbox.alert(f'Request error: {resp}', 'ERROR')
 
     return jsonify({})
 
@@ -84,5 +84,7 @@ def remove_evt():
         if evt.user_id == current_user.id:
             db.session.delete(evt)
             db.session.commit()
+            pymsgbox.alert(f'{evt.title} has been removed from your watch list!',
+                           'SUCCESS!')
 
     return jsonify({})

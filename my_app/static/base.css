@@ -1,0 +1,65 @@
+.space_even {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+h1, h2, h3 {
+    text-align: center;
+}
+
+a {
+    font-size: small;
+}
+
+nav {
+    background-color: blue;
+    height: 35px;
+    color: white;
+}
+
+.nav-link {
+    font-size: x-small;
+}
+
+.text_red {
+    color: red;
+}
+
+.text_blue {
+    color: black;
+    text-align: center;
+    height: 30px;
+    margin-top: 12px;
+    font-size: 12px;
+    margin-left: 2px;
+}
+
+.card {
+    min-height: 400px;
+    max-height: 400px;
+    font-size: x-small;
+    line-height: 0;
+    margin-bottom: 5px;
+    color: blue;
+}
+
+h5 {
+    font-size: small;
+    line-height: 1;
+}
+
+col {
+    margin-bottom: 5px;
+}
+
+.btn_font {
+    font-size: 12px !important;
+}
+
+form {
+    height: 100%;
+}
+
+nav img {
+    border-radius: 50%;
+}

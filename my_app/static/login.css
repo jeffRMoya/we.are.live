@@ -1,0 +1,14 @@
+body {
+    background-image: url("https://bit.ly/3CfrDNH");
+    background-position: center;
+    background-size: cover;
+    color: white;
+    min-height: 100vh;
+    padding-top: 35px;
+}
+
+.form-control {
+    width: 40%;
+    line-height: 0.5;
+    font-size: 0.5rem;
+}
