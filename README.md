@@ -1,6 +1,6 @@
 # we.are.live
 
-This repository is for a website dedicated to allowing users to search for and save upcoming live music events
+This repository is for a website dedicated to allowing users to search for and save upcoming live events
 
 ## Built With
 
