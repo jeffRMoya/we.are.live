@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, jsonify, redirect, url_for
 from flask_login import login_required, current_user
 from .models import Event
 from . import db
@@ -32,6 +32,8 @@ def home():
     if request.method == 'POST':
         place = request.form.get('city')
         keyword = request.form.get("keyword")
+        if len(events) != 0:
+            events.clear()
         if keyword and place:
             # looping through until the page number hits the totalPages
             # this gets all the data from the search criteria so I can paginate through it
@@ -42,6 +44,7 @@ def home():
                     events.extend(resp.json()['_embedded']['events'])
                     index = index + 1
                     if index == resp.json()['page']['totalPages']:
+                        redirect(url_for('views.home'))
                         break
                 else:
                     pymsgbox.alert(
