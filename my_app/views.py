@@ -1,3 +1,4 @@
+from time import sleep
 from flask import Blueprint, flash, render_template, request, jsonify
 from flask_login import login_required, current_user
 from .models import Event
@@ -5,35 +6,45 @@ from . import db
 import json
 import requests
 import pymsgbox
+from flask_paginate import Pagination, get_page_args, get_page_parameter
 
 views = Blueprint('views', __name__)
 
 url = "https://app.ticketmaster.com/discovery/v2/"
 api_key = "Bp0o0LwAEIR2zOwa7h1eoT7BnylC1kst"
+events = []
 
 
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-    locales = {}
-    events = {}
+
+    index = 0
 
     if request.method == 'POST':
         place = request.form.get('city')
         keyword = request.form.get("keyword")
-
         if keyword and place:
-            resp = requests.get(
-                f"{url}events.json?apikey={api_key}&keyword={keyword}&locale=*&size=20&city={place}")
-            if resp.ok:
-                events = resp.json()['_embedded']['events']
-                for event in events:
-                    locales = event['_embedded']['venues']
-            else:
-                flash(
-                    f"Error occurred. Response code: {resp}", category='error')
-
-    return render_template("home.html", user=current_user, items=events, locations=locales)
+            while True:
+                url_string = f"{url}events.json?apikey={api_key}&keyword={keyword}&locale=*&size=18&page={index}&city={place}"
+                resp = requests.get(url_string)
+                if resp.ok and resp.json()['page']['totalElements'] != 0:
+                    events.extend(resp.json()['_embedded']['events'])
+                    index = index + 1
+                    if index == resp.json()['page']['totalPages']:
+                        break
+                else:
+                    pymsgbox.alert(f'Bummer, no upcoming {keyword} events in {place}',
+                                   'FAIL!')
+                    break
+    page, per_page, offset = get_page_args(
+        page_parameter='page', per_page_parameter='per_page')
+    per_page = 18
+    offset = (page - 1) * per_page
+    total = len(events)
+    pagination_events = events[offset: offset + per_page]
+    pagination = Pagination(page=page, per_page=per_page, total=total)
+    return render_template("home.html", user=current_user, items=pagination_events, pagination=pagination)
 
 
 @views.route('/watch-list', methods=['GET', 'POST'])

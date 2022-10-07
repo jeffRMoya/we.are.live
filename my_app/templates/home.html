@@ -13,9 +13,12 @@
 <h2>Then Add Them to Your Watch List</h2>
 <br />
 {% if items %}
+<div>{{ pagination.links }}</div>
+<br />
 <div class="container">
   <div class="row">
-    {% for event in items %} {% for location in locations %}
+    {% for event in items %} {% for location in event['_embedded']['venues'] %}
+
     <div class="col-md-4 col-sm-12 col">
       <div class="card">
         <img
@@ -61,4 +64,6 @@
     {% endfor %} {% endfor %}
   </div>
 </div>
+<br />
+<div>{{pagination.links}}</div>
 {% endif %} {% endblock %}

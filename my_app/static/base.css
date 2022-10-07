@@ -32,6 +32,17 @@ nav {
     margin-top: 12px;
     font-size: 12px;
     margin-left: 2px;
+    border: inset;
+}
+
+.btn_nav {
+    color: black;
+    text-align: center;
+    height: 30px;
+    margin-top: 12px;
+    font-size: 12px;
+    margin-left: 2px;
+    border: outset;
 }
 
 .card {

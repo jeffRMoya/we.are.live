@@ -4,8 +4,12 @@ from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
+import requests
+import random
 
 auth = Blueprint('auth', __name__)
+avatar_url = "https://api.unsplash.com/"
+api_key = "&client_id=mj5PFE4ahehmfQbuAf6ct5mFI3UFKxGNpe_Wq9Yq8yQ"
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -56,6 +60,11 @@ def sign_up():
         elif len(password1) < 7:
             flash('Passwords must be at least 7 characters', category='error')
         else:
+            if len(avatar) == 0:
+                rand_num = random.randint(0, 9)
+                resp = requests.get(
+                    f'{avatar_url}search/photos?query=cat{api_key}')
+                avatar = resp.json()['results'][rand_num]['urls']['thumb']
             new_user = User(email=email, avatar=avatar, first_name=first_name, password=generate_password_hash(
                 password1, method='sha256'))
             db.session.add(new_user)
