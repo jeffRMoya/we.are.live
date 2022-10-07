@@ -60,6 +60,7 @@
             <li class="nav-item">
               <a class="nav-link" id="signUp" href="/sign-up">Sign Up</a>
             </li>
+
             {% else %}{% if not request.path == url_for('views.watch_list') %}
             <form action="#" method="POST">
               <div class="container">
@@ -133,7 +134,9 @@
         </div>
       </div>
     </nav>
-
+    <!-- this is how we get flash messages to appear on screen.
+ the formatting with JinJa gets all funky after saving
+ defines a variable 'messages', loops through them, then displays them based on their category-->
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
     messages %} {% for category, message in messages %} {% if category ==
     'error' %}

@@ -1,14 +1,6 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
-%}
-<style>
-  body {
-    background-image: url("https://bit.ly/3fIc4qe");
-    background-position: center;
-    color: white;
-    min-height: 100vh;
-    padding-top: 35px;
-  }
-</style>
+{% extends "base.html" %} {% block title %}Home{% endblock %} {%block content%}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}" />
 <h1>Find Events in Your City</h1>
 <h2>Then Add Them to Your Watch List</h2>
 <br />

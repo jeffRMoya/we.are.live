@@ -8,6 +8,9 @@ import requests
 import pymsgbox
 from flask_paginate import Pagination, get_page_args, get_page_parameter
 
+# defines that this is a blueprint of our app
+# this has a bunch of urls in here for navigation
+# blueprint lets us break up files for readability
 views = Blueprint('views', __name__)
 
 url = "https://app.ticketmaster.com/discovery/v2/"
@@ -15,6 +18,9 @@ api_key = "Bp0o0LwAEIR2zOwa7h1eoT7BnylC1kst"
 events = []
 
 
+# defines url to get to this page and what methods are allowed
+# whenever you hit this route it calls this function
+# cannot get to home page unless you're logged in
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
@@ -34,8 +40,8 @@ def home():
                     if index == resp.json()['page']['totalPages']:
                         break
                 else:
-                    pymsgbox.alert(f'Bummer, no upcoming {keyword} events in {place}',
-                                   'FAIL!')
+                    pymsgbox.alert(
+                        f'Bummer, no upcoming {keyword} events in {place}', 'FAIL!')
                     break
     page, per_page, offset = get_page_args(
         page_parameter='page', per_page_parameter='per_page')
@@ -45,6 +51,8 @@ def home():
     pagination_events = events[offset: offset + per_page]
     pagination = Pagination(page=page, per_page=per_page, total=total)
     return render_template("home.html", user=current_user, items=pagination_events, pagination=pagination)
+# render_template is what loads the data on the html pages
+    # this is also how we pass in variables to be used in html templating language
 
 
 @views.route('/watch-list', methods=['GET', 'POST'])
