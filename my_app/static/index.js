@@ -5,9 +5,7 @@ function addToList(eventId) {
     fetch('/add-to-list', {
         method: 'POST',
         body: JSON.stringify({eventId: eventId})
-    }).then((_res) => {
-        console.log(_res);
-    });
+    })
 }
 
 function removeEvent(id) {

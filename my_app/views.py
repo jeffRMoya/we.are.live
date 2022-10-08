@@ -27,10 +27,13 @@ events = []
 def home():
     # using index to get all the data from the search
     index = 0
+    per_page = 18
+    page = int(request.args.get('page', 1))
+    offset = (page - 1) * per_page
 
     # getting the data from the two input fields
     if request.method == 'POST':
-        place = request.form.get('city')
+        place = request.form.get('state')
         keyword = request.form.get("keyword")
         if len(events) != 0:
             events.clear()
@@ -38,13 +41,12 @@ def home():
             # looping through until the page number hits the totalPages
             # this gets all the data from the search criteria so I can paginate through it
             while True:
-                url_string = f"{url}events.json?apikey={api_key}&keyword={keyword}&locale=*&size=18&page={index}&city={place}"
+                url_string = f"{url}events.json?apikey={api_key}&keyword={keyword}&locale=*&size=18&page={index}&stateCode={place}"
                 resp = requests.get(url_string)
                 if resp.ok and resp.json()['page']['totalElements'] != 0:
                     events.extend(resp.json()['_embedded']['events'])
                     index = index + 1
                     if index == resp.json()['page']['totalPages']:
-                        redirect(url_for('views.home'))
                         break
                 else:
                     pymsgbox.alert(
@@ -52,10 +54,7 @@ def home():
                     break
     # this is for pagination
     # gets the args I need, sets them to the values I want and passes it to home.html
-    page, per_page, offset = get_page_args(
-        page_parameter='page', per_page_parameter='per_page')
-    per_page = 18
-    offset = (page - 1) * per_page
+
     total = len(events)
     pagination_events = events[offset: offset + per_page]
     pagination = Pagination(page=page, per_page=per_page, total=total)
@@ -92,10 +91,11 @@ def add_to_list():
 
             site = data['url']
             for locale in locations:
-                location = locale['city']['name']
-            if name_taken and img and time and location and site:
-                new_event = Event(title=name_taken, image=img, date=time,
-                                  city=location, website=site, user_id=current_user.id)
+                city = locale['city']['name']
+                state = locale['state']['stateCode']
+            if name_taken and img and time and city and site:
+                new_event = Event(title=name_taken, image=img, date=time, data=state,
+                                  city=city, website=site, user_id=current_user.id)
                 db.session.add(new_event)
                 db.session.commit()
                 pymsgbox.alert(f'{name_taken} has been added to your watch list!',

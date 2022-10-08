@@ -1,10 +1,15 @@
 .space_even {
     display: flex;
     justify-content: space-evenly;
+    width: 60%;
 }
 
 h1, h2, h3 {
     text-align: center;
+}
+
+h5 {
+    font-size: 15px;
 }
 
 a {
@@ -54,6 +59,10 @@ nav {
     color: blue;
 }
 
+.card-body {
+    font-size: 12px;
+}
+
 h5 {
     font-size: small;
     line-height: 1;
@@ -73,4 +82,8 @@ form {
 
 nav img {
     border-radius: 50%;
+}
+
+#form_container {
+    width: 75vw;
 }
